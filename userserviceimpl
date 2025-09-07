@@ -1,0 +1,68 @@
+package com.scb.axessspringboottraining.service;
+
+import com.scb.axessspringboottraining.dao.UserRepository;
+import com.scb.axessspringboottraining.entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class UserServiceImpl  implements UserService {
+    @Autowired
+    private UserRepository repo;
+
+    @Override
+    public User createUser(User user) {
+        String Result = user.getAccounttype();
+        if ("User".equals(Result)) {
+            return repo.save(user);
+        }
+        return null;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return (List<User>) repo.findAll();
+    }
+
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return repo.findById(email);
+    }
+
+    @Override
+    public User updateUser(String email, User updatedUser) {
+        return null;
+    }
+
+    @Override
+    public void deleteUser(String email) {
+        repo.deleteById(email);
+    }
+
+    @Override
+    public String userlogin(String email, String password) {
+
+        return repo.findById(email).map(user -> {
+                    if (user.getPassword().equals(password)) {
+                        return "login successful!";
+                    } else {
+                        return "Invalid Password!";
+                    }
+                })
+                .orElse("User not found! Please register");
+    }
+
+
+    @Override
+    public boolean resetPassword(String email, String newPassword) {
+        return repo.findById(email).map(user -> {
+            user.setPassword(newPassword);
+            repo.save(user);
+            return true;
+        }).orElse(false);
+    }
+}
+ 
