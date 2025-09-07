@@ -1,0 +1,19 @@
+package com.scb.axessspringboottraining.service;
+
+import com.scb.axessspringboottraining.entities.User;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface UserService {
+    User createUser (User user);
+    List<User> getAllUsers();
+    Optional<User> getUserByEmail(String email);
+    User updateUser(String email, User updatedUser);
+    void deleteUser(String email);
+
+    String userlogin(String email, String password);
+    boolean resetPassword(String email, String newPassword);
+
+}
+ 
